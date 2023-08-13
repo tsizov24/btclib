@@ -27,19 +27,10 @@ func mul(a, b *big.Int) *big.Int {
 }
 
 func div(a, b *big.Int) *big.Int {
-	x := big.NewInt(0)
-	x.Set(a)
-	y := big.NewInt(0)
-	y.Set(b)
-	for i := 0; i < 256; i++ {
-		if i != 0 {
-			y.Mul(y, y).Mod(y, p)
-		}
-		if p2.Bit(i) == 1 {
-			x.Mul(x, y).Mod(x, p)
-		}
-	}
-	return x
+	res := big.NewInt(0)
+	res.ModInverse(b, p)
+	res.Mul(res, a).Mod(res, p)
+	return res
 }
 
 func pow(a *big.Int, n int) *big.Int {
