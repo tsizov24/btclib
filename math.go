@@ -30,8 +30,25 @@ func div(a, b *big.Int) *big.Int {
 
 func pow(a *big.Int, n int) *big.Int {
 	res := big.NewInt(1)
-	for i := 0; i < n; i++ {
-		res = mod(res.Mul(res, a))
+	a = mod(a)
+	switch {
+	case n < 0:
+		return nil
+	case n < 4:
+		for i := 0; i < n; i++ {
+			res = mod(res.Mul(res, a))
+		}
+	default:
+		k := mod(a)
+		for n > 0 {
+			if n%2 == 1 {
+				res = mod(res.Mul(res, k))
+			}
+			n /= 2
+			if n > 0 {
+				k = mod(k.Mul(k, k))
+			}
+		}
 	}
 	return res
 }
