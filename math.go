@@ -10,27 +10,22 @@ func getNum(s string) *big.Int {
 
 func add(a, b *big.Int) *big.Int {
 	res := big.NewInt(0)
-	res.Add(a, b)
-	return mod(res)
+	return mod(res.Add(a, b))
 }
 
 func sub(a, b *big.Int) *big.Int {
 	res := big.NewInt(0)
-	res.Sub(a, b)
-	return mod(res)
+	return mod(res.Sub(a, b))
 }
 
 func mul(a, b *big.Int) *big.Int {
 	res := big.NewInt(0)
-	res.Mul(a, b)
-	return mod(res)
+	return mod(res.Mul(a, b))
 }
 
 func div(a, b *big.Int) *big.Int {
 	res := big.NewInt(0)
-	res.ModInverse(b, p)
-	res.Mul(res, a).Mod(res, p)
-	return res
+	return mod(res.ModInverse(b, p).Mul(res, a))
 }
 
 func pow(a *big.Int, n int) *big.Int {
@@ -43,6 +38,5 @@ func pow(a *big.Int, n int) *big.Int {
 
 func mod(a *big.Int) *big.Int {
 	res := big.NewInt(0)
-	res.Mod(a, p)
-	return res
+	return res.Mod(a, p)
 }
