@@ -9,13 +9,17 @@ import (
 
 // pref should be 2 or 3 for compressed public keys and 4 for uncompressed
 func PubToHash160(x, y *big.Int, compress bool) []byte {
-	var pref byte
+	b := make([]byte, 33)
 	if compress {
-		pref = byte(y.Bit(0)) + 2
+		b[0] = byte(y.Bit(0)) + 2
 	} else {
-		pref = 4
+		b[0] = 4
 	}
-	return RIPEMD160(SHA256(append([]byte{pref}, x.Bytes()...)))
+	c := 33 - len(x.Bytes())
+	for i, v := range x.Bytes() {
+		b[i+c] = v
+	}
+	return RIPEMD160(SHA256(b))
 }
 
 func RIPEMD160(b []byte) []byte {
